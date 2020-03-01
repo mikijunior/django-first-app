@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ article.title }} {% endblock %}
+
+{% block content %}
+    <h2>{{ article.title }}</h2>
+    <em>{{ article.pub_date }}</em>
+    <p>{{ article.text }}</p>
+
+    {% if comments %}
+        <hr>
+        <p>Comments: </p><br>
+        {%  for item in comments %}
+            <strong>{{ item.author }}</strong>
+            <p>{{ item.comment }}</p>
+        {% endfor %}
+        <hr>
+    {% endif %}
+
+    <form action="{% url 'first:comment' article.id %}" method="POST">
+        {% csrf_token %}
+        <input type="text" name="author" required placeholder="Name"><br>
+        <textarea name="comment" cols="30" rows="10" placeholder="Type your comment here..."></textarea><br>
+        <button type="submit">Comment</button>
+    </form>
+{% endblock %}
